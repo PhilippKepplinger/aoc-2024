@@ -1,16 +1,17 @@
 
-import at.pkepp.puzzle11.Blinker
+import at.pkepp.puzzle11.RecursiveBlinker
 
 import scala.main
 
 @main
 def main(): Unit = {
-  val blinker = new Blinker(12, "puzzle11-zero.txt")
-//  val blinker = new Blinker("puzzle11.txt")
-  val star1 = blinker.blinkTimes(25, true)
-  println(star1.length)
+  //  val blinker = new BufferBlinker(12, "puzzle11.txt")
+  val blinker = new RecursiveBlinker("puzzle11.txt")
+
+  val star1 = blinker.blinkTimes(25)
+  println(star1)
   println()
 
   val star2 = blinker.blinkTimes(75)
-  println(star2.length)
+  println(star2)
 }

@@ -1,6 +1,6 @@
 package puzzle11
 
-import at.pkepp.puzzle11.{Blinker, Calculator, InputParser}
+import at.pkepp.puzzle11.{BufferBlinker, Calculator, RecursiveBlinker}
 import org.scalatest.funspec.AnyFunSpec
 
 class Puzzle11Test extends AnyFunSpec {
@@ -30,16 +30,40 @@ class Puzzle11Test extends AnyFunSpec {
     }
   }
 
-  describe("Blinker") {
+  describe("Buffer Blinker") {
     it("test blink times") {
-      val blinker = new Blinker(6, "puzzle11-example.txt")
+      val blinker = new BufferBlinker(12, "puzzle11-example.txt")
 
-      assert(blinker.format(blinker.blinkTimes(1)) == "253000 1 7")
-      assert(blinker.format(blinker.blinkTimes(2)) == "253 0 2024 14168")
-      assert(blinker.format(blinker.blinkTimes(3)) == "512072 1 20 24 28676032")
-      assert(blinker.format(blinker.blinkTimes(4)) == "512 72 2024 2 0 2 4 2867 6032")
-      assert(blinker.format(blinker.blinkTimes(5)) == "1036288 7 2 20 24 4048 1 4048 8096 28 67 60 32")
-      assert(blinker.format(blinker.blinkTimes(6)) == "2097446912 14168 4048 2 0 2 4 40 48 2024 40 48 80 96 2 8 6 7 6 0 3 2")
+      assert(blinker.blinkTimes(1) == 3)
+      assert(blinker.blinkTimes(2) == 4)
+      assert(blinker.blinkTimes(3) == 5)
+      assert(blinker.blinkTimes(4) == 9)
+      assert(blinker.blinkTimes(5) == 13)
+      assert(blinker.blinkTimes(6) == 22)
+    }
+  }
+
+  describe("Recursive Blinker") {
+    it("test blink times") {
+      val blinker = new RecursiveBlinker("puzzle11-example.txt")
+
+      assert(blinker.blinkTimes(1) == 3)
+      assert(blinker.blinkTimes(2) == 4)
+      assert(blinker.blinkTimes(3) == 5)
+      assert(blinker.blinkTimes(4) == 9)
+      assert(blinker.blinkTimes(5) == 13)
+      assert(blinker.blinkTimes(6) == 22)
+    }
+  }
+
+  describe("Blinker") {
+    it("test all blinker same result") {
+      val bufferBlinker = new BufferBlinker(12, "puzzle11-example.txt")
+      val recursiveBlinker = new RecursiveBlinker("puzzle11-example.txt")
+
+      for (i <- 1 until 25) {
+        assert(bufferBlinker.blinkTimes(i) == recursiveBlinker.blinkTimes(i))
+      }
     }
   }
 }
