@@ -8,7 +8,11 @@ import scala.concurrent.{Await, ExecutionContext, Future}
 class RecursiveBlinker(file: String)
   extends Blinker(file) {
 
+  private val memory = new util.HashMap[(Long, Int), Long]()
+
   override def blinkTimes(n: Int, debug: Boolean = false): Long = {
+    memory.clear()
+
     val start = System.currentTimeMillis()
 
     val result = blinkParallel(initialStones, n)
@@ -21,7 +25,6 @@ class RecursiveBlinker(file: String)
 
   private def blinkParallel(stones: Array[Long], n: Int): Long = {
     val futures = stones.toList.map(stone => Future {
-      val memory = new util.HashMap[(Long, Int), Long]()
       blink(stone, n, memory)
     })
 

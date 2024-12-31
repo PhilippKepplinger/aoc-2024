@@ -1,17 +1,15 @@
 
-import at.pkepp.puzzle11.RecursiveBlinker
+import at.pkepp.puzzle13.InputParser
 
 import scala.main
 
 @main
 def main(): Unit = {
-  //  val blinker = new BufferBlinker(12, "puzzle11.txt")
-  val blinker = new RecursiveBlinker("puzzle11.txt")
+  val machines = new InputParser("puzzle13/input.txt").parse()
 
-  val star1 = blinker.blinkTimes(25)
-  println(star1)
-  println()
+  val tokens = machines
+    .map(machine => machine.tokens())
+    .sum
 
-  val star2 = blinker.blinkTimes(75)
-  println(star2)
+  println(tokens)
 }
