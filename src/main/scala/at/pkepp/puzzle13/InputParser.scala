@@ -4,7 +4,7 @@ import scala.io.Source
 
 class InputParser(val file: String) {
 
-  def parse(): Array[ClawMachine] = {
+  def parse(offset: Long = 0L): Array[ClawMachine] = {
     Source.fromResource(file)
       .mkString
       .replace("Button A: ", "")
@@ -16,15 +16,11 @@ class InputParser(val file: String) {
       .replace("X=", "")
       .replace("Y=", "")
       .split("\\n\\n")
-      .map(value => toClawMachine(value))
+      .map(value => toClawMachine(value, offset))
   }
 
-  private def toClawMachine(value: String): ClawMachine = {
-    val unit = 0
-    //    val unit = 10000000000000L
-    // 52150630365188
-    // 58376392290572
-
+  private def toClawMachine(value: String,
+                            offset: Long): ClawMachine = {
     val lines = value.split("\n")
     val aLine = lines.apply(0).split(',')
     val bLine = lines.apply(1).split(',')
@@ -32,7 +28,7 @@ class InputParser(val file: String) {
 
     val a = new Vector(aLine.apply(0).toLong, aLine.apply(1).toLong)
     val b = new Vector(bLine.apply(0).toLong, bLine.apply(1).toLong)
-    val p = new Vector(priceLine.apply(0).toLong + unit, priceLine.apply(1).toLong + unit)
+    val p = new Vector(priceLine.apply(0).toLong + offset, priceLine.apply(1).toLong + offset)
     new ClawMachine(a, b, p)
   }
 }
