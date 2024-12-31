@@ -1,12 +1,8 @@
 package at.pkepp.puzzle13
 
-class Vector(val x: BigDecimal, val y: BigDecimal) {
-  override def toString: String = f"(${x.toString}, $y)"
-}
+class Vector(val x: BigDecimal, val y: BigDecimal)
 
-class Buttons(val A: BigDecimal, val B: BigDecimal) {
-  override def toString: String = f"($A, $B)"
-}
+class Buttons(val A: BigDecimal, val B: BigDecimal)
 
 class ClawMachine(val a: Vector,
                   val b: Vector,
@@ -16,10 +12,9 @@ class ClawMachine(val a: Vector,
 
   def tokens(): BigDecimal = {
     val buttons = getButtons()
-    val solvable = hasExactResult(buttons)
-    val valid = isValid(buttons)
+    val solvable = isSolvable(buttons)
 
-    if solvable && valid
+    if solvable
     then buttons.A * costA + buttons.B * costB
     else BigDecimal.exact(0)
   }
@@ -37,21 +32,7 @@ class ClawMachine(val a: Vector,
     (P.x * a.y - a.x * P.y) / (b.x * a.y - b.y * a.x)
   }
 
-  private def isValid(buttons: Buttons): Boolean = {
-    val precision = 0.000001
-    val calculatedX = buttons.A * a.x + buttons.B * b.x
-    val calculatedY = buttons.A * a.y + buttons.B * b.y
-
-    val diffX = calculatedX - P.x
-    val diffY = calculatedY - P.y
-
-    val xOK = diffX < precision
-    val yOK = diffY < precision
-
-    xOK && yOK
-  }
-
-  private def hasExactResult(buttons: Buttons): Boolean = {
+  private def isSolvable(buttons: Buttons): Boolean = {
     hasNoDecimals(buttons.A) &&
       hasNoDecimals(buttons.B) &&
       buttons.A >= 0 &&
