@@ -1,15 +1,17 @@
 
-import at.pkepp.puzzle13.InputParser
+import at.pkepp.puzzle1.{DistanceCalculator, InputParser}
 
 import scala.main
 
 @main
 def main(): Unit = {
-  val machines = new InputParser("puzzle13/input.txt").parse(10000000000000L)
+  val lists = new InputParser("puzzle1/input.txt").parse()
+  val calculator = new DistanceCalculator(lists)
 
-  val tokens = machines
-    .map(machine => machine.tokens())
-    .sum
+  val distance = calculator.getDistance
+  println(distance)
 
-  println(tokens)
+  val similarity = calculator.getSimilarity
+  println(similarity)
+
 }
