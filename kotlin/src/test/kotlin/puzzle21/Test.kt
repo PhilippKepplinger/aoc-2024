@@ -10,8 +10,25 @@ class Test {
     val parser = InputParser("21")
 
     @Test
-    fun test() {
+    fun test_part_one_example() {
         val decoder = CodeDecoder(2)
+
+        val res = decoder.decode(
+            listOf(
+                parser.parseLine("029A"),
+                parser.parseLine("980A"),
+                parser.parseLine("179A"),
+                parser.parseLine("456A"),
+                parser.parseLine("379A"),
+            )
+        )
+
+        assertEquals(126384, res)
+    }
+
+    @Test
+    fun test_part_two_example() {
+        val decoder = CodeDecoder(25)
 
         val res = decoder.decode(
             listOf(

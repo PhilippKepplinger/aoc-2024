@@ -1,37 +1,53 @@
 package at.pkepp.puzzle21
 
+import java.util.*
+import kotlin.time.DurationUnit
+import kotlin.time.toDuration
+
 class CodeDecoder(private val depth: Int) {
 
     private val numpadDecoder = PadDecoder(Numpad())
     private val arrowpadDecoder = PadDecoder(Arrowpad())
 
     fun decode(codes: List<Code>): Long {
-        return codes.sumOf {
+        val start = Date().time
+
+        val result = codes.sumOf {
             decodeSingle(it)
         }
+
+        val end = Date().time
+        val time = (end - start).toDuration(DurationUnit.MILLISECONDS)
+        val duration = time.toComponents { min, sec, nanos -> "${min}:${sec}:${nanos}" }
+
+        println("Total complexity of $result calculated in $duration")
+
+        return result
     }
 
     // decodes a single code like 029A
     private fun decodeSingle(code: Code): Long {
         val numpadPaths = code.codePaths
-        println("code paths: $numpadPaths")
 
         val arrowPadPaths = numpadPaths
             .map {
                 numpadDecoder.getShortestPaths(it.first, it.second)
             }
-        println("arrow pad paths: $arrowPadPaths")
 
         var possiblePaths = getPossibleArrowPaths(arrowPadPaths)
-        println("possible paths: $possiblePaths")
 
         for (n in 0 until depth) {
+            val start = Date().time
             possiblePaths = possiblePaths
                 .flatMap {
                     decodeSingleArrow(it)
                 }
 
-            println("paths: ${possiblePaths.size}")
+            val end = Date().time
+            val time = (end - start).toDuration(DurationUnit.MILLISECONDS)
+            val duration = time.inWholeSeconds
+
+            println("depth $n took $duration sec with ${possiblePaths.size} paths")
         }
 
 

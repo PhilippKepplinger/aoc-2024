@@ -5,5 +5,4 @@ fun main() {
 
     val codeDecoder = CodeDecoder(2)
     val totalComplexity = codeDecoder.decode(codes)
-    println("Total Complexity: $totalComplexity")
 }
