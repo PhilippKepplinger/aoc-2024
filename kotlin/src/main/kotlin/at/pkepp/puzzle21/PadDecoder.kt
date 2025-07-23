@@ -7,25 +7,22 @@ class PadDecoder(private val pad: Pad) {
 
     private val cache = HashMap<String, List<String>>()
 
-    fun getShortestPaths(from: Char,
-                         to: Char): List<String> {
+    fun getShortestPaths(fromTo: String): List<String> {
+        return cache[fromTo]
+            ?: findShortestPaths(fromTo)
+    }
 
-        val key = "${from}${to}"
-        if (cache.contains(key)) {
-            return cache.getValue(key)
-        }
-
-        val allPaths = getAllPaths(from, to)
+    private fun findShortestPaths(fromTo: String): List<String> {
+        val allPaths = getAllPaths(fromTo)
         val shortestPaths = allPaths.filter { it.length == allPaths[0].length }
-        cache[key] = shortestPaths
+        cache[fromTo] = shortestPaths
         return shortestPaths
     }
 
-    private fun getAllPaths(from: Char,
-                            to: Char): List<String> {
+    private fun getAllPaths(fromTo: String): List<String> {
         return getPaths(
-            pad.getButton(from),
-            pad.getButton(to),
+            pad.getButton(fromTo[0]),
+            pad.getButton(fromTo[1]),
             "",
             mutableListOf()
         ).sortedBy {

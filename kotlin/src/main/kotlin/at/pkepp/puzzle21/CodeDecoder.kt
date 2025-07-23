@@ -31,13 +31,27 @@ class CodeDecoder(private val depth: Int) {
 
         val arrowPadPaths = numpadPaths
             .map {
-                numpadDecoder.getShortestPaths(it.first, it.second)
+                numpadDecoder.getShortestPaths(it)
             }
 
-        var possiblePaths = getPossibleArrowPaths(arrowPadPaths)
+        val possiblePaths = getPossibleArrowPaths(arrowPadPaths)
+        println("intial paths: $possiblePaths")
+
+        val length = decodeBroad(possiblePaths)
+        val complexity = code.code * length
+
+        println("Complexity for: ${code.code} is ${code.code} x ${length} = $complexity")
+        println()
+
+        return complexity
+    }
+
+    private fun decodeBroad(paths: List<String>): Int {
+        var possiblePaths = paths
 
         for (n in 0 until depth) {
             val start = Date().time
+
             possiblePaths = possiblePaths
                 .flatMap {
                     decodeSingleArrow(it)
@@ -50,14 +64,7 @@ class CodeDecoder(private val depth: Int) {
             println("depth $n took $duration sec with ${possiblePaths.size} paths")
         }
 
-
-        val shortest = possiblePaths.sortedBy { it.length }[0]
-        val complexity = code.code * shortest.length
-
-        println("Complexity for: ${code.code} is ${code.code} x ${shortest.length} = $complexity")
-        println()
-
-        return complexity
+        return possiblePaths.sortedBy { it.length }[0].length
     }
 
     private fun getPossibleArrowPaths(arrowPaths: List<List<String>>): List<String> {
@@ -74,7 +81,11 @@ class CodeDecoder(private val depth: Int) {
 
     private fun decodeSingleArrow(path: String): List<String> {
         val paths = CommandParser.getCodeCommands("A$path")
-        val shortestPaths = paths.map { arrowpadDecoder.getShortestPaths(it.first, it.second) }
+
+        val shortestPaths = paths.map {
+            arrowpadDecoder.getShortestPaths(it)
+        }
+
         return getPossibleArrowPaths(shortestPaths)
     }
 }
