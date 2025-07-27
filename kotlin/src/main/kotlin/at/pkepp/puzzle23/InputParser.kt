@@ -22,6 +22,11 @@ class InputParser(private val puzzle: String,
                 parseLine(network, it)
             }
 
+
+        network.computers.forEach {
+            it.value.connections = it.value.connections.toSortedMap()
+        }
+
         return network
     }
 

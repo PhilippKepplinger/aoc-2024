@@ -50,10 +50,11 @@ class Network {
         return matchingSets.size
     }
 
-    fun findLargestSet(prefix: String): String {
-        var largestSet = mutableSetOf<Computer>()
-
+    fun findLargestSet(): String {
         val sets = computers
+            .filter {
+                it.key.startsWith("t")
+            }
             .map {
                 it.value
             }
@@ -63,12 +64,16 @@ class Network {
             println(chiefComputer.connections.keys)
         }
 
-        for (primaryComputer in sets) {
-            for (i in 0 until primaryComputer.connections.size - 1) {
-                val currentComputer = primaryComputer.connections.values.elementAt(i)
-                val matches = mutableSetOf(primaryComputer, currentComputer)
+        val mostConnectionPerComputer = mutableListOf<List<Computer>>()
 
-                for (j in (i + 1) until primaryComputer.connections.size) {
+        for (primaryComputer in sets) {
+            val matchMap = mutableListOf<Pair<Int, Computer>>()
+
+            for (i in 0 until primaryComputer.connections.size) {
+                val currentComputer = primaryComputer.connections.values.elementAt(i)
+                val matches = mutableSetOf(primaryComputer)
+
+                for (j in 0 until primaryComputer.connections.size) {
                     val otherComputer = primaryComputer.connections.values.elementAt(j)
                     val isChiefComputer = otherComputer == primaryComputer
 
@@ -77,17 +82,26 @@ class Network {
                     }
                 }
 
-//                if (matches.size == largestSet.size) {
-//                    println("${matches.size}: ${matches}")
-//                }
-                if (matches.size > largestSet.size) {
-                    largestSet = matches
-                }
-
+                matchMap.add(matches.size to currentComputer)
             }
+
+            val mostConnections = matchMap
+                .groupBy { it.first }
+                .values
+                .sortedBy { -it.size }
+                .get(0)
+                .map { it.second }
+                .toMutableList()
+
+            mostConnections.add(primaryComputer)
+            mostConnectionPerComputer.add(mostConnections)
         }
 
-        return largestSet
+        val sortedRes = mostConnectionPerComputer
+            .sortedBy { -it.size }
+            .get(0)
+
+        return sortedRes
             .map { it.name }
             .sorted()
             .joinToString(",")

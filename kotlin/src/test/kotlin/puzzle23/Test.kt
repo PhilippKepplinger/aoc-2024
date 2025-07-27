@@ -23,14 +23,14 @@ class Test23 {
     @Test
     fun test_part_two_example() {
         val network = InputParser("23", true).parseFile()
-        val lanSet = network.findLargestSet("t")
+        val lanSet = network.findLargestSet()
         assertEquals("co,de,ka,ta", lanSet)
     }
 
     @Test
     fun test_part_two_input() {
         val network = InputParser("23", false).parseFile()
-        val lanSet = network.findLargestSet("t")
+        val lanSet = network.findLargestSet()
         println(lanSet)
 
         assertNotEquals("ar,bx,cc,ew,fq,jz,lj,nx,og,rd,tj,ug,wd", lanSet)
