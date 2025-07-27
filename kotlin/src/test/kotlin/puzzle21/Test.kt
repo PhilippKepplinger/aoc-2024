@@ -5,7 +5,7 @@ import at.pkepp.puzzle21.InputParser
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
-class Test {
+class Test21 {
 
     val parser = InputParser("21")
 
