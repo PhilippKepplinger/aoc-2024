@@ -7,6 +7,9 @@ class PadDecoder(private val pad: Pad) {
 
     private val cache = HashMap<String, List<String>>()
 
+    /**
+     * @param fromTo 2 char string in the like "<A" or "vv"
+     */
     fun getShortestPaths(fromTo: String): List<String> {
         return cache[fromTo]
             ?: findShortestPaths(fromTo)
