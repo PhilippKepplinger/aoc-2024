@@ -28,21 +28,23 @@ class Test24 {
 
     @Test
     fun test_part_one_example() {
-        val circuit = InputParser("24", true).parseFile()
+        val circuit = InputParser("24", "example").parseFile()
 
         assertEquals("2024", circuit.getResult())
     }
 
     @Test
     fun test_part_one_input() {
-        val circuit = InputParser("24", false).parseFile()
+        val circuit = InputParser("24", "input").parseFile()
 
         assertEquals("59336987801432", circuit.getResult())
     }
 
     @Test
     fun test_part_two_example() {
-        val circuit = InputParser("24", false).parseFile()
+        val circuit = InputParser("24", "example2").parseFile()
+
+        assertEquals("86", circuit.getCorrectedResult(2))
     }
 
     @Test

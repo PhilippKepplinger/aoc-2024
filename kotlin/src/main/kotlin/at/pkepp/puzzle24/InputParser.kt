@@ -3,13 +3,11 @@ package at.pkepp.puzzle24
 import java.io.File
 
 class InputParser(private val puzzle: String,
-                  private val debug: Boolean = false) {
+                  private val filename: String) {
 
     fun parseFile(): Circuit {
-        val file = if (debug) "example.txt" else "input.txt"
-
         val url =
-            this::class.java.getResource("/puzzle$puzzle/$file")
+            this::class.java.getResource("/puzzle$puzzle/$filename.txt")
                 ?: throw IllegalArgumentException("Input file $puzzle not found.")
 
         val lines = File(url.toURI())
