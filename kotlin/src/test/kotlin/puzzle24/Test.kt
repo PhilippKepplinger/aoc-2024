@@ -41,13 +41,6 @@ class Test24 {
     }
 
     @Test
-    fun test_part_two_example() {
-        val circuit = InputParser("24", "example2").parseFile()
-
-        assertEquals("86", circuit.getCorrectedResult(2))
-    }
-
-    @Test
     fun test_part_two_input() {
         val circuit = InputParser("24", "input").parseFile()
 

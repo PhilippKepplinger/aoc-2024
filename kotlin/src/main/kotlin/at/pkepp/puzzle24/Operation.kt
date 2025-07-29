@@ -4,10 +4,10 @@ import kotlin.experimental.and
 import kotlin.experimental.or
 import kotlin.experimental.xor
 
-class Operation(private val a: Bit,
-                private val operator: String,
-                private val b: Bit,
-                private val output: Bit) {
+class Operation(val a: Bit,
+                val operator: String,
+                val b: Bit,
+                var output: Bit) {
 
     companion object {
         fun getCalculation(operator: String): (a: Byte, b: Byte) -> Byte {
@@ -29,5 +29,21 @@ class Operation(private val a: Bit,
 
     fun canPerform(): Boolean {
         return a.isSet() && b.isSet()
+    }
+
+    fun isXOR(): Boolean {
+        return operator == "XOR"
+    }
+
+    fun isAND(): Boolean {
+        return operator == "AND"
+    }
+
+    fun isOR(): Boolean {
+        return operator == "OR"
+    }
+
+    fun hasBits(a: Bit?, b: Bit?): Boolean {
+        return (this.a == a || this.b == a) && (this.a == b || this.b == b)
     }
 }
