@@ -44,6 +44,6 @@ class Test24 {
     fun test_part_two_input() {
         val circuit = InputParser("24", "input").parseFile()
 
-        assertEquals("59609718189912", circuit.getCorrectedResult(4))
+        assertEquals("59609718189912", circuit.getCorrectedResult())
     }
 }
