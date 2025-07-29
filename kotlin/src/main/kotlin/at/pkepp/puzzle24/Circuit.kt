@@ -5,6 +5,9 @@ import java.math.BigInteger
 class Circuit(private val bits: Map<String, Bit>,
               private val operations: MutableList<Operation>) {
 
+    /**
+     * Calculates all outputs of all gates until each bit has a value
+     */
     fun getResult(): String {
         return getResult(bits, operations)
     }
@@ -51,12 +54,15 @@ class Circuit(private val bits: Map<String, Bit>,
         }
     }
 
+    /**
+     * for each order of the binary input, validate if the current order has a valid full-adder installed.
+     * If not, try to fix the adder by checking various error conditions for which a swap can be done with 100% certainty
+     */
     fun getCorrectedResult(): String {
         val swappedOperations = operations.toMutableList()
         val swappedBits = bits.toMap()
 
         fixAdderCircuit(swappedBits, swappedOperations)
-        calculateAllBits(swappedBits, swappedOperations)
         return getResult(swappedBits, swappedOperations)
     }
 
@@ -78,7 +84,7 @@ class Circuit(private val bits: Map<String, Bit>,
                 cBit = andGate?.output // could still be swapped because cBit could point to the wrong gate
                 valid = z1 != null && z1.isOutputBit(0) && cBit != null
             } else {
-                // test if the current level is a valid full adder
+                // test if the current order represents a full adder
                 println("${cBit?.name} (cBIT)")
 
                 // x and y must always go to one XOR
